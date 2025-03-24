@@ -26,10 +26,3 @@ def train_test_split(X, y, test_size=0.2, random_seed=42):
     y_test = Tensor(y.data[test_indices], requires_grad=True)
 
     return X_train, X_test, y_train, y_test
-
-
-# 定义计算精度的函数
-def compute_accuracy(predictions, targets):
-    predicted_classes = (predictions.data > 0.5).astype(np.float32)
-    accuracy = (predicted_classes == targets.data).mean()
-    return accuracy

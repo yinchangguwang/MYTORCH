@@ -16,6 +16,11 @@ y = Tensor(y, requires_grad=True)
 # 划分数据集
 X_train, X_test, y_train, y_test = utils.train_test_split(X, y, test_size=0.2)
 
+# 定义计算精度的函数
+def compute_accuracy(predictions, targets):
+    predicted_classes = (predictions.data > 0.5).astype(np.float32)
+    accuracy = (predicted_classes == targets.data).mean()
+    return accuracy
 
 # 构建一个简单的神经网络
 model = nn.Sequential(
@@ -49,7 +54,7 @@ for epoch in range(100):
     
     # 计算训练精度
     train_predictions = model(X_train)
-    train_accuracy = utils.compute_accuracy(train_predictions, y_train)
+    train_accuracy = compute_accuracy(train_predictions, y_train)
     
     if (epoch + 1) % 10 == 0:
         print(f'Epoch {epoch + 1}, Loss: {loss.data}, Train Accuracy: {train_accuracy * 100:.2f}%')
@@ -58,5 +63,5 @@ for epoch in range(100):
 # 测试模型
 predictions = model(X_test)
 test_loss = criterion(predictions, y_test)
-test_accuracy = utils.compute_accuracy(predictions, y_test)
+test_accuracy = compute_accuracy(predictions, y_test)
 print(f'Test Loss: {test_loss.data}, Test Accuracy: {test_accuracy * 100:.2f}%')
